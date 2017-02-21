@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_acceptance"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.kuehnenagel.android.Acceptance"
+    tools:showIn="@layout/app_bar_acceptance">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pick Working Shift Below"
+        android:textSize="17sp" />
+
+
+    <Spinner
+        android:id="@+id/spinnerShift"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:entries="@array/work_shift"></Spinner>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tempe1"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/temp1"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:hint="Temperature 1"
+                android:inputType="number"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <com.dd.morphingbutton.MorphingButton
+            android:id="@+id/btnMorph1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="#fff"
+            android:visibility="invisible"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tempe2"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/temp2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Temperature 2"
+                android:inputType="number"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <com.dd.morphingbutton.MorphingButton
+            android:id="@+id/btnMorph2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="#fff"
+            android:visibility="invisible"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tempe3"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/temp3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Temperature 3"
+                android:inputType="number"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <com.dd.morphingbutton.MorphingButton
+            android:id="@+id/btnMorph3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="#fff"
+            android:visibility="invisible"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tempe4"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/temp4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Temperature 4"
+                android:inputType="number"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <com.dd.morphingbutton.MorphingButton
+            android:id="@+id/btnMorph4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="#fff"
+            android:visibility="invisible"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tempe5"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/temp5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Temperature 5"
+                android:inputType="number"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <com.dd.morphingbutton.MorphingButton
+            android:id="@+id/btnMorph5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="#fff"
+            android:visibility="invisible"/>
+    </RelativeLayout>
+
+
+   <!-- <TextView
+        android:id="@+id/action"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/carddemo_mayknow_add"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@android:color/black"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        android:text="Next" />
+-->
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/next"
+        android:layout_width="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:background="@color/colorPrimary"
+        android:text="next"
+        android:textColor="@color/mb_white"></android.support.v7.widget.AppCompatButton>
+
+
+    <!--<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/accept"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:text="Accept Delivery"
+            android:textColor="@color/mb_white"></android.support.v7.widget.AppCompatButton>
+
+        <TextView
+            android:id="@+id/view"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/accept"
+            android:visibility="invisible" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/view"
+            android:background="@color/colorAccent"
+            android:text="Reject delivery"
+            android:textColor="@color/mb_white"></android.support.v7.widget.AppCompatButton>
+    </RelativeLayout>-->
+
+
+</LinearLayout>

@@ -1,0 +1,408 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="3dp">
+    <!--60dp-->
+
+    <RelativeLayout
+        android:id="@+id/shiplabel"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentLeft="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="Consignee"
+            android:textColor="@android:color/black"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/consignee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:layout_toEndOf="@+id/shiplabel"
+        android:layout_toRightOf="@+id/shiplabel"
+        android:text="Fresco"
+        android:textColor="@android:color/black"
+        android:textSize="12sp" />
+
+    <RelativeLayout
+        android:id="@+id/dlabel"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/consignee">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="Total Boxes"
+            android:textColor="@android:color/black"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/t_boxes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/consignee"
+        android:layout_marginRight="5dp"
+        android:layout_toEndOf="@+id/dlabel"
+        android:layout_toRightOf="@+id/dlabel"
+        android:text="300"
+        android:textColor="@android:color/black"
+        android:textSize="12sp" />
+
+    <RelativeLayout
+        android:id="@+id/seallabel"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/t_boxes">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="Actual count"
+            android:textColor="@android:color/black"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/actual_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/t_boxes"
+        android:layout_marginRight="5dp"
+        android:layout_toEndOf="@+id/seallabel"
+        android:layout_toRightOf="@+id/seallabel"
+        android:text="100"
+        android:textColor="@android:color/black"
+        android:textSize="12sp" />
+
+
+    <!--HAWB AND MAWB-->
+    <RelativeLayout
+        android:id="@+id/m"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/actual_count">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="MAWB"
+            android:textColor="@android:color/black"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/mawb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/actual_count"
+        android:layout_marginRight="5dp"
+        android:layout_toEndOf="@+id/m"
+        android:layout_toRightOf="@+id/m"
+        android:text="zzzzz"
+        android:textColor="@android:color/black"
+        android:textSize="12sp" />
+
+    <RelativeLayout
+        android:id="@+id/h"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/m">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="HAWB"
+            android:textColor="@android:color/black"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/hawb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/m"
+        android:layout_marginRight="5dp"
+        android:layout_toEndOf="@+id/h"
+        android:layout_toRightOf="@+id/h"
+        android:text="23020230"
+        android:textColor="@android:color/black"
+        android:textSize="12sp" />
+
+    <!--HAWB AND MAWB-->
+
+
+    <RelativeLayout
+        android:id="@+id/pt"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/hawb">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="X- RAY Log"
+            android:textColor="@android:color/black"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <!-- <TextView
+         android:id="@+id/xray"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentRight="true"
+         android:layout_marginRight="5dp"
+         android:textColor="@android:color/black"
+         android:textSize="12sp"
+         android:text="Xray"
+         android:layout_toEndOf="@+id/pt"
+         android:layout_toRightOf="@+id/pt"
+         android:layout_below="@+id/actual_count"/>-->
+    <Spinner
+        android:id="@+id/xray"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/box_type"
+        android:layout_alignRight="@+id/box_type"
+        android:layout_below="@+id/hawb"
+        android:layout_toRightOf="@+id/pt"
+        android:entries="@array/xray"
+        android:text="Xray"
+        android:textColor="@android:color/black"
+        android:textSize="12sp" />
+
+    <!--<TextView
+        android:id="@+id/delivery_note_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:textColor="@android:color/black"
+        android:textSize="12sp"
+        android:layout_toEndOf="@+id/truckl"
+        android:layout_toRightOf="@+id/truckl"
+        android:layout_below="@+id/xray"/>-->
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/delivery_note_number"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/xray"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/truckl"
+        android:layout_toRightOf="@+id/truckl">
+
+        <EditText
+            android:id="@+id/delivery_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:inputType="number"
+            android:textColor="@android:color/black"
+            android:textSize="12sp" />
+    </android.support.design.widget.TextInputLayout>
+
+    <RelativeLayout
+        android:id="@+id/tlabel"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/delivery_note_number">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="Box Type"
+            android:textColor="@android:color/black"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <!--<TextView
+        android:id="@+id/box_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:textColor="@android:color/black"
+        android:textSize="12sp"
+        android:text="Box Type"
+        android:layout_toEndOf="@+id/tlabel"
+        android:layout_toRightOf="@+id/tlabel"
+        android:layout_below="@+id/delivery_note_number"/>-->
+
+    <Spinner
+        android:id="@+id/box_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/delivery_note_number"
+        android:layout_toRightOf="@+id/tlabel"
+        android:entries="@array/box_type"
+        android:text="Box Type"
+        android:textColor="@android:color/black"
+        android:textSize="12sp" />
+
+
+    <RelativeLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/box_type">
+
+        <!--  <android.support.v7.widget.AppCompatButton
+              android:id="@+id/accept"
+              android:layout_width="150dp"
+              android:layout_height="wrap_content"
+              android:background="@color/colorAccent"
+              android:text="Accept Delivery"
+              android:textColor="@color/mb_white"></android.support.v7.widget.AppCompatButton>
+  -->
+        <TextView
+            android:id="@+id/accept"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/carddemo_mayknow_add"
+            android:text="Accept"
+            android:textAlignment="center"
+            android:textColor="@color/mb_white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/view"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/accept"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/reject"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/view"
+            android:background="@drawable/carddemo_mayknow_add"
+            android:text="Reject delivery"
+            android:textAlignment="center"
+            android:textColor="@color/mb_white" />
+        <!--<android.support.v7.widget.AppCompatButton
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/view"
+            android:background="@color/colorAccent"
+            android:text="Reject delivery"
+            android:textColor="@color/mb_white"></android.support.v7.widget.AppCompatButton>-->
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/d"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/description"
+        android:layout_alignLeft="@+id/description"
+        android:layout_alignStart="@+id/description"
+        android:text=""
+        android:textColor="#000"
+        android:textSize="20sp" />
+
+    <!--<com.like.LikeButton
+        app:icon_type="heart"
+        app:icon_size="25dp"
+        app:liked="false"
+        android:id="@+id/heart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/description"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:layout_toRightOf="@+id/carddemo_gplay_main_inner_subtitle"
+        android:layout_toEndOf="@+id/carddemo_gplay_main_inner_subtitle"/>-->
+    <!--
+        <TextView
+            android:id="@+id/carddemo_gplay_main_inner_subtitle2"
+            android:layout_width="150dp"
+            android:layout_height="32dp"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:layout_alignBottom="@+id/description"
+            android:layout_toLeftOf="@+id/consignee"
+            android:layout_toStartOf="@+id/consignee" />
+
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="40dp"
+            android:layout_height="32dp"
+            android:textColor="#BBB"
+            android:textSize="12sp"
+            android:layout_alignBottom="@+id/description"
+            android:layout_centerHorizontal="true"
+            android:layout_toEndOf="@+id/carddemo_gplay_main_inner_subtitle2"
+            android:layout_toRightOf="@+id/carddemo_gplay_main_inner_subtitle2"
+            android:layout_marginLeft="30dp"/>-->
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="5dp"
+        android:textColor="#BBB"
+        android:textSize="12sp"
+        android:visibility="invisible" />
+
+    <RelativeLayout
+        android:id="@+id/truckl"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/delivery_note_number"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="Delivery note Number"
+            android:textColor="@android:color/black"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_below="@+id/buttons" />
+
+
+</RelativeLayout>

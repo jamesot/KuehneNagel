@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/home"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Home" />
+        <item
+            android:id="@+id/acceptance"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Acceptance" />
+        <item
+            android:id="@+id/build"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Build Up" />
+
+
+    </group>
+
+</menu>
