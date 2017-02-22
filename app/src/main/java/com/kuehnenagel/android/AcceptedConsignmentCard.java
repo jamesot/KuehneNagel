@@ -35,12 +35,14 @@ public class AcceptedConsignmentCard extends Card {
 
 
     protected String Shipper;
+    protected String box_dimension;
     protected String DispatchDate;
     protected String SealNo;
     protected String ProductType;
     protected String Truck;
     protected String TotalNo;
     protected String Action;
+
     protected Context context;
     static TextView input, Gross, Net;
     static boolean answer = false;
@@ -163,32 +165,16 @@ public class AcceptedConsignmentCard extends Card {
                 context.startActivity(intent);
 
 
-               /* PalletPlanCard palletPlanCard = new PalletPlanCard(context);
-                palletPlanCard.init();
-                cards.add(palletPlanCard);
-                MyShortcuts.showToast("Pallet plan below",context);
-//                cardGridArrayAdapter = new CardGridArrayAdapter(context,cards);
-                if (cardGridArrayAdapter!=null) {
-                    cardGridArrayAdapter.notifyDataSetChanged();
-                }else{
-                    cardGridArrayAdapter = new CardGridArrayAdapter(context,cards);
 
-                    CardGridView cardGridView = (CardGridView) view.findViewById(R.id.carddemo_grid_base1);
-
-                    if (cardGridView!=null){
-                        cardGridView.setAdapter(cardGridArrayAdapter);
-                    }
-                }*/
-
-                /*Intent intent = new Intent(getContext(),Acceptance.class);
-                intent.putExtra("seal_no",SealNo);
-                Log.e("seal",SealNo);
-                getContext().startActivity(intent);*/
-                /*cards.remove(getCardView().getCard());
-                cardGridArrayAdapter.notifyDataSetChanged();*/
 
             }
         });
+
+        final TextView box_dimensions =(TextView) view. findViewById(R.id.box_dimension);
+        box_dimensions.setText(box_dimension);
+
+       /* final EditText boxes=(EditText) view.findViewById(R.id.actual_count);
+        boxes.setText(TotalNo);*/
 
 
        /* Spinner xray = (Spinner) view.findViewById(R.id.xray);

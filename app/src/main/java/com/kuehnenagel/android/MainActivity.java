@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity
                         if (i % 2 == 0) {
 
                             JSONObject shipper = res.getJSONObject(i);
-                            GplayGridCard gplayGridCard3 = new GplayGridCard(getBaseContext());
+                            GplayGridCard gplayGridCard3 = new GplayGridCard(MainActivity.this);
                             gplayGridCard3.Shipper = shipper.getString("ShipperName");
                             gplayGridCard3.DispatchDate = shipper.getString("DispatchDate");
                             gplayGridCard3.SealNo = shipper.getString("SealNo");
