@@ -54,6 +54,16 @@ public class HomePage extends AppCompatActivity
             }
         });
 
+        Button button3 = (Button) findViewById(R.id.but4);
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(),Dispatch.class);
+                getIntent().getStringExtra("session");
+                startActivity(intent);
+            }
+        });
+
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

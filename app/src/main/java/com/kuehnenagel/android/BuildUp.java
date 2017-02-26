@@ -102,11 +102,17 @@ public class BuildUp extends AppCompatActivity
         adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_item, data);
         spinner2.setAdapter(adapter);
 
+        spinner = (Spinner) findViewById(R.id.consignee);
+        data2.add("Choose consignee");
+        adapter2 = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_item, data2);
+        spinner.setAdapter(adapter2);
+
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 if (!adapterView.getItemAtPosition(i).toString().equals("Choose flight")) {
+
 
                     if (TheDate == null) {
                         MyShortcuts.showToast("Please pick a date first! ", getBaseContext());
@@ -116,6 +122,10 @@ public class BuildUp extends AppCompatActivity
                         GetConsignees(adapterView.getItemAtPosition(i).toString(), TheDate);
 
                     }
+
+                    data2= new ArrayList<String>();
+                    data2.add("Choose consignee");
+                    adapter2.notifyDataSetChanged();
                 }
 
             }
@@ -127,10 +137,7 @@ public class BuildUp extends AppCompatActivity
         });
 
 
-        spinner = (Spinner) findViewById(R.id.consignee);
-        data2.add("Choose consignee");
-        adapter2 = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_item, data2);
-        spinner.setAdapter(adapter2);
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

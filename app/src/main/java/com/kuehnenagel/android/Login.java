@@ -61,7 +61,11 @@ public class Login extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                login();
+                if (MyShortcuts.hasInternetConnected(getBaseContext())) {
+                    login();
+                } else {
+                    MyShortcuts.showToast("No internet connection!", getBaseContext());
+                }
 
             }
         });
@@ -108,7 +112,7 @@ public class Login extends AppCompatActivity {
 
                 // TODO: Implement successful signup logic here
                 // By default we just finish the Activity and log them in automatically
-                this.finish();
+//                this.finish();
             }
         }
     }
@@ -122,7 +126,7 @@ public class Login extends AppCompatActivity {
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
-        finish();
+//        finish();
     }
 
     public void onLoginFailed() {
@@ -183,10 +187,10 @@ public class Login extends AppCompatActivity {
 //                    String success = jObj.getString("success");
                     setDefaults("email", _emailText.getText().toString(), getBaseContext());
                     setDefaults("password", _passwordText.getText().toString(), getBaseContext());
-                    MyShortcuts.setDefaults("session",session,getBaseContext());
+                    MyShortcuts.setDefaults("session", session, getBaseContext());
                     MyShortcuts.set(_emailText.getText().toString(), _passwordText.getText().toString(), getBaseContext());
                     Intent intent = new Intent(getApplicationContext(), HomePage.class);
-                    intent.putExtra("session",session);
+                    intent.putExtra("session", session);
                     startActivity(intent);
 
                 } catch (JSONException e) {
