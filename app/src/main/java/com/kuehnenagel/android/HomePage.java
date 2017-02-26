@@ -39,6 +39,7 @@ public class HomePage extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(),MainActivity.class);
+                getIntent().getStringExtra("session");
                 startActivity(intent);
             }
         });
@@ -48,6 +49,7 @@ public class HomePage extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(),BuildUp.class);
+                getIntent().getStringExtra("session");
                 startActivity(intent);
             }
         });

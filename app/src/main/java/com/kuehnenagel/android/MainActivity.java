@@ -179,8 +179,8 @@ public class MainActivity extends AppCompatActivity
 //        Log.e("JSON serializing", js.toString());
         String tag_string_req = "req_Categories";
 
-        Log.e("url is", MyShortcuts.baseURL() + "/cargo_handling/api/acceptance/?sessionId="+ getIntent().getStringExtra("session"));
-        StringRequest strReq = new StringRequest(Request.Method.GET, MyShortcuts.baseURL() + "/cargo_handling/api/acceptance/?sessionId="+ getIntent().getStringExtra("session"), new Response.Listener<String>() {
+        Log.e("url is", MyShortcuts.baseURL() + "/cargo_handling/api/acceptance/?sessionId="+MyShortcuts.getDefaults("session", getBaseContext()));
+        StringRequest strReq = new StringRequest(Request.Method.GET, MyShortcuts.baseURL() + "/cargo_handling/api/acceptance/?sessionId="+ MyShortcuts.getDefaults("session", getBaseContext()), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e("Response from server is", response.toString());

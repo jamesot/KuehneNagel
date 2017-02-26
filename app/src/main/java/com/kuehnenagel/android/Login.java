@@ -185,7 +185,7 @@ public class Login extends AppCompatActivity {
                     setDefaults("password", _passwordText.getText().toString(), getBaseContext());
                     MyShortcuts.setDefaults("session",session,getBaseContext());
                     MyShortcuts.set(_emailText.getText().toString(), _passwordText.getText().toString(), getBaseContext());
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), HomePage.class);
                     intent.putExtra("session",session);
                     startActivity(intent);
 
