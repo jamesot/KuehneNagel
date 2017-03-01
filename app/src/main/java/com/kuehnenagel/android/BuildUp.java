@@ -336,6 +336,7 @@ public class BuildUp extends AppCompatActivity
                     e.printStackTrace();
 //                    Toast.makeText(getBaseContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     Log.e("JSON ERROR", e.toString());
+                    mProgressDialog.dismiss();
                 }
             }
 
@@ -346,6 +347,7 @@ public class BuildUp extends AppCompatActivity
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("VolleyError", "Error: " + error.getMessage());
 //                hideProgressDialog();
+                mProgressDialog.dismiss();
             }
         }) {
 

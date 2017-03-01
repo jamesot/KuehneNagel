@@ -1,5 +1,6 @@
 package com.kuehnenagel.android;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -42,6 +43,7 @@ import it.gmariotti.cardslib.library.view.CardGridView;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private static CardGridArrayAdapter cardGridArrayAdapter;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,18 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        GetData();
+        if (MyShortcuts.hasInternetConnected(this)) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage("Getting data ...");
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.show();
+            GetData();
+        }
+
+
+
+
        /* ArrayList<Card> cards = new ArrayList<Card>();
         GplayGridCard gplayGridCard = new GplayGridCard(this);
         gplayGridCard.Shipper = "Mt Elgon";
@@ -184,6 +197,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onResponse(String response) {
                 Log.e("Response from server is", response.toString());
+                mProgressDialog.dismiss();
 
                 ArrayList<Card> cards = new ArrayList<Card>();
                 String success = null;
@@ -254,6 +268,7 @@ public class MainActivity extends AppCompatActivity
                     e.printStackTrace();
 //                    Toast.makeText(getBaseContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     Log.e("JSON ERROR", e.toString());
+                    mProgressDialog.dismiss();
                 }
             }
 
@@ -262,6 +277,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                mProgressDialog.dismiss();
                 VolleyLog.d("VolleyError", "Error: " + error.getMessage());
 //                hideProgressDialog();
             }
