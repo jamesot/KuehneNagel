@@ -17,7 +17,7 @@
             android:layout_marginRight="5dp"
             android:text="Flight Name"
             android:textColor="@android:color/black"
-            android:textSize="12sp" />
+            android:textSize="16dp" />
     </RelativeLayout>
 
 
@@ -32,7 +32,7 @@
         android:layout_toEndOf="@+id/shiplabel"
         android:layout_toRightOf="@+id/shiplabel"
         android:textColor="@android:color/black"
-        android:textSize="12sp" />
+        android:textSize="16dp" />
 
     <RelativeLayout
         android:id="@+id/dlabel"
@@ -46,7 +46,7 @@
             android:layout_marginRight="5dp"
             android:text="Shipment Date"
             android:textColor="@android:color/black"
-            android:textSize="12sp" />
+            android:textSize="16dp" />
     </RelativeLayout>
 
     <TextView
@@ -58,7 +58,7 @@
         android:textColor="@android:color/black"
         android:layout_toEndOf="@+id/dlabel"
         android:layout_toRightOf="@+id/dlabel"
-        android:textSize="12sp"
+        android:textSize="16dp"
         android:layout_below="@+id/flight_name"
         />
 
@@ -74,7 +74,7 @@
             android:layout_marginRight="5dp"
             android:text="Pallet Number"
             android:textColor="@android:color/black"
-            android:textSize="12sp" />
+            android:textSize="16dp" />
     </RelativeLayout>
 
     <TextView
@@ -84,7 +84,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="5dp"
         android:textColor="@android:color/black"
-        android:textSize="12sp"
+        android:textSize="16dp"
         android:layout_toEndOf="@+id/dlabel"
         android:layout_toRightOf="@+id/dlabel"
         android:layout_below="@+id/shipment_date"/>
@@ -101,7 +101,7 @@
             android:layout_marginRight="5dp"
             android:text="Contour"
             android:textColor="@android:color/black"
-            android:textSize="12sp" />
+            android:textSize="16dp" />
     </RelativeLayout>
 
     <TextView
@@ -111,7 +111,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="5dp"
         android:textColor="@android:color/black"
-        android:textSize="12sp"
+        android:textSize="16dp"
         android:layout_toEndOf="@+id/pt"
         android:layout_toRightOf="@+id/pt"
         android:layout_below="@+id/pallet_number"/>
@@ -128,7 +128,7 @@
             android:layout_marginRight="5dp"
             android:text="Pallet ID"
             android:textColor="@android:color/black"
-            android:textSize="12sp" />
+            android:textSize="16dp" />
     </RelativeLayout>
 
     <TextView
@@ -138,7 +138,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="5dp"
         android:textColor="@android:color/black"
-        android:textSize="12sp"
+        android:textSize="16dp"
         android:layout_toEndOf="@+id/truckl"
         android:layout_toRightOf="@+id/truckl"
         android:layout_below="@+id/contour"/>
@@ -155,7 +155,7 @@
             android:layout_marginRight="5dp"
             android:text="Total No. of Boxes"
             android:textColor="@android:color/black"
-            android:textSize="12sp" />
+            android:textSize="16dp" />
     </RelativeLayout>
 
     <TextView
@@ -165,7 +165,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="5dp"
         android:textColor="@android:color/black"
-        android:textSize="12sp"
+        android:textSize="16dp"
         android:layout_toEndOf="@+id/tlabel"
         android:layout_toRightOf="@+id/tlabel"
         android:layout_below="@+id/pallet_id"/>-->
@@ -226,7 +226,7 @@
         android:layout_width="40dp"
         android:layout_height="32dp"
         android:textColor="#BBB"
-        android:textSize="12sp"
+        android:textSize="16dp"
         android:layout_alignBottom="@+id/description"
         android:layout_centerHorizontal="true"
         android:layout_toEndOf="@+id/carddemo_gplay_main_inner_subtitle2"
@@ -241,7 +241,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="5dp"
         android:textColor="#BBB"
-        android:textSize="12sp"
+        android:textSize="16dp"
         android:visibility="invisible" />
 
 

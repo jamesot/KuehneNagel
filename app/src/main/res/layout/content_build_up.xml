@@ -13,6 +13,13 @@
     tools:context="com.kuehnenagel.android.BuildUp"
     tools:showIn="@layout/app_bar_build_up"
     android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/note"
+        android:text="Please pick a date, then follow the steps sequentially"
+        android:layout_marginTop="10dp"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private static CardGridArrayAdapter cardGridArrayAdapter;
     private ProgressDialog mProgressDialog;
+    public static String data="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,6 +198,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onResponse(String response) {
                 Log.e("Response from server is", response.toString());
+                data=response;
                 mProgressDialog.dismiss();
 
                 ArrayList<Card> cards = new ArrayList<Card>();
