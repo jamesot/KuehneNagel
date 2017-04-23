@@ -16,6 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,13 +42,14 @@ public class PalletPlanCard extends Card {
 
 
     protected String Shipper;
-    protected String DispatchDate;
-    protected String SealNo;
-    protected String ProductType;
-    protected String Truck;
+    protected String boxDimension;
     protected String TotalNo;
+    protected String planned, unit, BoxId, ForeCastId, ContourId, BoxesAverage, bookingId;
     protected String Action;
     protected Context context;
+    ArrayList<String> data3 = new ArrayList<String>();
+    ArrayList<String> data4 = new ArrayList<String>();
+    ArrayList<String> data5 = new ArrayList<String>();
     static TextView input, Gross, Net;
     static boolean answer = false;
     static String spinner_1, spinner_2, spinner_3;
@@ -130,8 +133,10 @@ public class PalletPlanCard extends Card {
             }
         });
 */
+        final EditText et = (EditText) view.findViewById(R.id.actual_count);
 
-        final TextView action = (TextView) view.findViewById(R.id.proceed_build);
+        final TextView action = (TextView) view.findViewById(R.id.submit);
+        final EditText pn= (EditText) view.findViewById(R.id.pallet_number_tv);
 
         action.setClickable(true);
         action.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +144,37 @@ public class PalletPlanCard extends Card {
             public void onClick(View view) {
 
 //                Toast.makeText(getContext(),"Saved successfully!",Toast.LENGTH_LONG);
-                MyShortcuts.showToast("Saved successfully!",getContext());
+                if (!et.getText().toString().isEmpty()) {
+
+                    build(getId(), et.getText().toString(), unit, ForeCastId, BoxId, ContourId, bookingId, BoxesAverage,pn.getText().toString());
+                } else {
+                    MyShortcuts.showToast("Kindly fill the actual count field!", context);
+                }
+
+//                Intent intent = new Intent(context, BuildUp.class);
+//                intent.putExtra("name",getCardHeader().getTitle());
+//                context.startActivity(intent);
+                /*Intent intent = new Intent(getContext(),Acceptance.class);
+                intent.putExtra("seal_no",SealNo);
+                Log.e("seal",SealNo);
+                getContext().startActivity(intent);*/
+
+
+            }
+        });
+
+        final TextView action3 = (TextView) view.findViewById(R.id.proceed_build);
+
+        action3.setClickable(true);
+        action3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                save(getId(), et.getText().toString(), unit, ForeCastId, BoxId, ContourId, bookingId);
+
+//   Toast.makeText(getContext(),"Saved successfully!",Toast.LENGTH_LONG);
+//                build(getId(),et.getText().toString(),unit,ForeCastId,BoxId,ContourId,bookingId);
+                MyShortcuts.showToast("Saved successfully!", getContext());
 //                Intent intent = new Intent(context, BuildUp.class);
 //                intent.putExtra("name",getCardHeader().getTitle());
 //                context.startActivity(intent);
@@ -167,6 +202,16 @@ public class PalletPlanCard extends Card {
                 getContext().startActivity(intent);*/
             }
         });
+
+
+        final TextView shipper = (TextView) view.findViewById(R.id.shipper);
+        shipper.setText(Shipper);
+        final TextView box_dimension = (TextView) view.findViewById(R.id.dimension);
+        box_dimension.setText(boxDimension);
+        final TextView box_planned = (TextView) view.findViewById(R.id.planned_boxes);
+        box_planned.setText(planned);
+        final TextView unitNo = (TextView) view.findViewById(R.id.box_type);
+        unitNo.setText(unit);
 
 
     }
@@ -264,6 +309,10 @@ public class PalletPlanCard extends Card {
         input.setHint("Enter box count");
         layout.addView(input);
 
+        final EditText pn = new EditText(context);
+        pn.setHint("Enter Pallet Number");
+        layout.addView(pn);
+
 
         alertDialogBuilder.setView(layout);
 
@@ -271,15 +320,18 @@ public class PalletPlanCard extends Card {
         try {
 
             if (!input.getText().toString().isEmpty()) {
-                JSONArray json = new JSONArray(MyShortcuts.getDefaults("json", context));
+                JSONArray json = new JSONArray(MyShortcuts.getDefaults("buildupjson", context));
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("dimension", spinner_1);
                 jsonObject.put("uld", spinner_2);
                 jsonObject.put("uldtype", spinner_3);
+                jsonObject.put("BookingId", getId());
                 jsonObject.put("box_count", input.getText().toString());
                 json.put(jsonObject);
-            } else{
-                Toast.makeText(context,"Did not add the plan because you left some fields empty",Toast.LENGTH_SHORT);
+
+                build(getId(), input.getText().toString(), unit, ForeCastId, BoxId, ContourId, bookingId, BoxesAverage,pn.getText().toString());
+            } else {
+                Toast.makeText(context, "Did not add the plan because you left some fields empty", Toast.LENGTH_SHORT);
             }
 
 
@@ -408,6 +460,78 @@ public class PalletPlanCard extends Card {
         // show alert
         alertDialog.show();
         return answer;
+    }
+
+    private void build(String id, String boxc, String unit, String forecast, String boxid, String contourid, String bookingid, String average, String palletNumber) {
+        final JSONObject finalJsonObject = new JSONObject();
+
+        final JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("FlightId", getId());
+            jsonObject.put("dimension", spinner_1);
+            jsonObject.put("uld", spinner_2);
+            jsonObject.put("uldtype", spinner_3);
+            jsonObject.put("BookingId", id);
+            jsonObject.put("BoxesAcctual", boxc);
+            jsonObject.put("UnitNo", unit);
+            jsonObject.put("ForecastId", forecast);
+            jsonObject.put("BoxTypeDimId", boxid);
+            jsonObject.put("ContourId", contourid);
+            jsonObject.put("BookingId", bookingid);
+            jsonObject.put("PalletNo",palletNumber);
+
+            Log.e("average", average + "");
+            Log.e("boxc", boxc + "");
+            float actualvol = Float.parseFloat(boxc) * Float.parseFloat(average);
+
+            jsonObject.put("VolumeActual", actualvol+"");
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            finalJsonObject.put("UserId", MyShortcuts.getDefaults("UserId", context));
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.put(jsonObject);
+            finalJsonObject.put("BuildUp", jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Post.PostData(MyShortcuts.getDefaults("url", context) + "/cargo_handling/api/buildup/put", finalJsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.e("response", jsonObject.toString());
+            }
+        });
+    }
+
+    private void save(String id, String boxc, String unit, String forecast, String boxid, String contourid, String bookingid) {
+        try {
+
+//            if (!input.getText().toString().isEmpty()) {
+                JSONArray json = new JSONArray(MyShortcuts.getDefaults("buildupjson", context));
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("dimension", spinner_1);
+                jsonObject.put("uld", spinner_2);
+                jsonObject.put("uldtype", spinner_3);
+                jsonObject.put("BookingId", getId());
+//                jsonObject.put("box_count", input.getText().toString());
+                json.put(jsonObject);
+
+//                build(getId(),input.getText().toString(),unit,ForeCastId,BoxId,ContourId,bookingId);
+//            }
+            /*else {
+                Toast.makeText(context, "Did not add the plan because you left some fields empty", Toast.LENGTH_SHORT);
+//            }*/
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

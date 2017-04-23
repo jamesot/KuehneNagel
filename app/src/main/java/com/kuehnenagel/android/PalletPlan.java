@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -35,7 +36,8 @@ public class PalletPlan extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     protected CardGridArrayAdapter cardGridArrayAdapter;
     static TextView input;
-    protected static ArrayList<Card> cards = new ArrayList<Card>();
+    protected ArrayList<Card> cards = new ArrayList<Card>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +46,7 @@ public class PalletPlan extends AppCompatActivity
         setSupportActionBar(toolbar);
         setTitle(getIntent().getStringExtra("name"));
         JSONArray json = new JSONArray();
-        MyShortcuts.setDefaults("json", json.toString(), this);
+        MyShortcuts.setDefaults("buildupjson", json.toString(), this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -57,8 +59,39 @@ public class PalletPlan extends AppCompatActivity
             }
         });
 
+        String p = getIntent().getStringExtra("pallet");
 
         try {
+            JSONArray jsonArray = new JSONArray(p);
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject js = jsonArray.getJSONObject(i);
+
+                PalletPlanCard palletPlanCard = new PalletPlanCard(PalletPlan.this);
+                palletPlanCard.Shipper = getIntent().getStringExtra("shipper");
+                palletPlanCard.boxDimension = js.getString("BoxTypeDimName");
+                palletPlanCard.planned = js.getString("BoxesPlanned");
+                palletPlanCard.unit = js.getString("UnitNo");
+                palletPlanCard.setId(js.getString("BookingId"));
+                palletPlanCard.ForeCastId = js.getString("ForecastId");
+                palletPlanCard.BoxId = js.getString("BoxTypeDimId");
+                palletPlanCard.ContourId = js.getString("ContourId");
+                palletPlanCard.bookingId = js.getString("BookingId");
+                palletPlanCard.BoxesAverage = js.getString("BoxAverVol");
+//                TODO add data for the spinners
+
+//                    TODO add the new entry here
+                palletPlanCard.init();
+                cards.add(palletPlanCard);
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+      /*  try {
             JSONArray jsonArray = new JSONArray(MyShortcuts.getDefaults("json",this));
             if (jsonArray.length()>0){
                 for (int i=0;i<jsonArray.length();i++){
@@ -72,16 +105,17 @@ public class PalletPlan extends AppCompatActivity
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
 
-        PalletPlanCard palletPlanCard = new PalletPlanCard(this);
+        /*PalletPlanCard palletPlanCard = new PalletPlanCard(this);
         palletPlanCard.init();
-        cards.add(palletPlanCard);
-        cardGridArrayAdapter = new CardGridArrayAdapter(getBaseContext(),cards);
+        cards.add(palletPlanCard)*/
+        ;
+        cardGridArrayAdapter = new CardGridArrayAdapter(getBaseContext(), cards);
 
         CardGridView cardGridView = (CardGridView) findViewById(R.id.carddemo_grid_base1);
 
-        if (cardGridView!=null){
+        if (cardGridView != null) {
             cardGridView.setAdapter(cardGridArrayAdapter);
         }
 
@@ -135,15 +169,18 @@ public class PalletPlan extends AppCompatActivity
 
         if (id == R.id.home) {
             // Handle the camera action
-            Intent intent = new Intent(getBaseContext(),HomePage.class);
+            Intent intent = new Intent(getBaseContext(), HomePage.class);
             startActivity(intent);
         } else if (id == R.id.acceptance) {
-            Intent intent = new Intent(getBaseContext(),MainActivity.class);
+            Intent intent = new Intent(getBaseContext(), MainActivity.class);
             startActivity(intent);
 
-        }  else if (id == R.id.build) {
-            Intent intent = new Intent(getBaseContext(),BuildUp.class);
+        } else if (id == R.id.build) {
+            Intent intent = new Intent(getBaseContext(), BuildUp.class);
             startActivity(intent);
+
+        } else if (id == R.id.post) {
+            setURL();
 
         }
 
@@ -151,6 +188,51 @@ public class PalletPlan extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    protected void setURL() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PalletPlan.this);
+
+        alertDialogBuilder.setTitle("Set URL");
+        alertDialogBuilder.setMessage("Add URL below");
+
+        LinearLayout layout = new LinearLayout(PalletPlan.this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+
+        final EditText et = new EditText(PalletPlan.this);
+        layout.addView(et);
+
+
+        alertDialogBuilder.setView(layout);
+
+        alertDialogBuilder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                MyShortcuts.setDefaults("url", et.getText().toString(), PalletPlan.this);
+
+
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Close & Finish", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+
+
+            }
+        });
+
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show alert
+        alertDialog.show();
+
     }
 
     protected void ConfirmBuild() {
@@ -162,14 +244,12 @@ public class PalletPlan extends AppCompatActivity
         alertDialogBuilder.setMessage(" Please verify the pallet plan before you submit this. This step is not reversible Are you sure you want to complete this build up?");
 
 
-
-
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(getBaseContext(), BuildUp.class);
-                intent.putExtra("name",getIntent().getStringExtra("name"));
+                intent.putExtra("name", getIntent().getStringExtra("name"));
                 startActivity(intent);
 
 

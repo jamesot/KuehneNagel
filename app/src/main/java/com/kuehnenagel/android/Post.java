@@ -1,4 +1,4 @@
-package mpay.com.paybill.Model;
+package com.kuehnenagel.android;
 
 import android.util.Base64;
 import android.util.Log;
@@ -30,7 +30,7 @@ public class Post {
 
     public static void PostData(String url, JSONObject parameter, Response.Listener<JSONObject> response) {
 
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, baseURL + url, parameter,
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, url, parameter,
                 response, new Error()) {
 
             @Override
@@ -63,7 +63,7 @@ public class Post {
 
     }
 
-    public static void PostString(String url,final String parameter, Response.Listener<String> response) {
+    public static void PostString(String url, final String parameter, Response.Listener<String> response) {
 
         StringRequest req = new StringRequest(Request.Method.POST, url,
                 response, new Error()) {

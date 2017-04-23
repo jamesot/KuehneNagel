@@ -1,6 +1,8 @@
 package com.kuehnenagel.android;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +21,8 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,13 +59,17 @@ public class BuildUp extends AppCompatActivity
     TextView dateTextView;
     protected CardGridArrayAdapter cardGridArrayAdapter;
     static TextView input;
-    protected static ArrayList<Card> cards = new ArrayList<Card>();
+    protected ArrayList<Card> cards = new ArrayList<Card>();
     protected JSONArray build = null;
     Spinner spinner, spinner2;
     ArrayAdapter<String> adapter, adapter2;
     ArrayList<String> data = new ArrayList<String>();
     ArrayList<String> data2 = new ArrayList<String>();
-    String TheDate = null;
+    ArrayList<String> data3 = new ArrayList<String>();
+    ArrayList<String> data4 = new ArrayList<String>();
+    ArrayList<String> data5 = new ArrayList<String>();
+
+    String TheDate = null, TheFlight = null;
     private JSONObject object = null;
     private ProgressDialog mProgressDialog;
 
@@ -72,14 +80,7 @@ public class BuildUp extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (MyShortcuts.hasInternetConnected(this)) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage("Getting data ...");
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mProgressDialog.setCancelable(false);
-            mProgressDialog.show();
-            GetBuildUp();
-        }
+
 //        GetFlights();
 
         Button button = (Button) findViewById(R.id.date);
@@ -118,14 +119,15 @@ public class BuildUp extends AppCompatActivity
                         MyShortcuts.showToast("Please pick a date first! ", getBaseContext());
 
                     } else {
+                        TheFlight = adapterView.getItemAtPosition(i).toString();
                         Log.e("consignees par.", adapterView.getItemAtPosition(i).toString() + TheDate);
+//                        data2 = new ArrayList<String>();
+                        data2.clear();
                         GetConsignees(adapterView.getItemAtPosition(i).toString(), TheDate);
 
                     }
 
-                    data2= new ArrayList<String>();
-                    data2.add("Choose consignee");
-                    adapter2.notifyDataSetChanged();
+
                 }
 
             }
@@ -137,7 +139,6 @@ public class BuildUp extends AppCompatActivity
         });
 
 
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -145,12 +146,14 @@ public class BuildUp extends AppCompatActivity
                 if (!selected_item.equals("Choose consignee")) {
 //                    TODO show table contents
 
-                    AcceptedConsignmentCard acceptedConsignmentCard = new AcceptedConsignmentCard(BuildUp.this);
+                   /* AcceptedConsignmentCard acceptedConsignmentCard = new AcceptedConsignmentCard(BuildUp.this);
                     acceptedConsignmentCard.Shipper = "Oserian";
+                    acceptedConsignmentCard.box_dimension = "100x33x20";
                     acceptedConsignmentCard.init();
                     cards.add(acceptedConsignmentCard);
                     AcceptedConsignmentCard acceptedConsignmentCard2 = new AcceptedConsignmentCard(BuildUp.this);
                     acceptedConsignmentCard2.Shipper = "Mt. Elgon";
+                    acceptedConsignmentCard.box_dimension = "100x33x20";
                     acceptedConsignmentCard2.init();
                     cards.add(acceptedConsignmentCard2);
                     cardGridArrayAdapter = new CardGridArrayAdapter(getBaseContext(), cards);
@@ -159,10 +162,11 @@ public class BuildUp extends AppCompatActivity
 
                     if (cardGridView != null) {
                         cardGridView.setAdapter(cardGridArrayAdapter);
-                    }
+                    }*/
+                    cards.clear();
+                    GetAll(TheFlight, TheDate, selected_item);
 
                 }
-
                 Log.e("Box type", selected_item);
             }
 
@@ -240,12 +244,63 @@ public class BuildUp extends AppCompatActivity
             Intent intent = new Intent(getBaseContext(), BuildUp.class);
             startActivity(intent);
 
+        } else if (id == R.id.dispatch) {
+            Intent intent = new Intent(getBaseContext(), Dispatch.class);
+            startActivity(intent);
+
+        }else if (id == R.id.post) {
+            setURL();
+
         }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    protected void setURL() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(BuildUp.this);
+
+        alertDialogBuilder.setTitle("Set URL");
+        alertDialogBuilder.setMessage("Add URL below");
+        LinearLayout layout = new LinearLayout(BuildUp.this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+
+        final EditText et = new EditText(BuildUp.this);
+        layout.addView(et);
+
+
+        alertDialogBuilder.setView(layout);
+
+        alertDialogBuilder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                MyShortcuts.setDefaults("url", et.getText().toString(), BuildUp.this);
+
+
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Close & Finish", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+
+
+            }
+        });
+
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show alert
+        alertDialog.show();
+
     }
 
     @Override
@@ -274,7 +329,15 @@ public class BuildUp extends AppCompatActivity
         }
         TheDate = year + "-" + month + "-" + day;
         Log.e("the date", TheDate);
-        GetFlight(TheDate);
+        if (MyShortcuts.hasInternetConnected(this)) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage("Getting data ...");
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.show();
+            GetBuildUp(TheDate);
+        }
+
 
     }
 
@@ -284,15 +347,15 @@ public class BuildUp extends AppCompatActivity
     }
 
 
-    private void GetBuildUp() {
+    private void GetBuildUp(String theDate) {
         // Toast.makeText(getBaseContext(), "Inside function!", Toast.LENGTH_SHORT).show();
         // Tag used to cancel the request
 
 //        Log.e("JSON serializing", js.toString());
         String tag_string_req = "req_Categories";
 
-        Log.e("url is", MyShortcuts.baseURL() + "/cargo_handling/api/buildup/?sessionId=" + MyShortcuts.getDefaults("session", getBaseContext()));
-        StringRequest strReq = new StringRequest(Request.Method.GET, MyShortcuts.baseURL() + "/cargo_handling/api/buildup/?sessionId=" + MyShortcuts.getDefaults("session", getBaseContext()), new Response.Listener<String>() {
+        Log.e("url is", MyShortcuts.getDefaults("url", getBaseContext()) + "/cargo_handling/api/buildup/?shipmentDate"+theDate+"&sessionId=" + MyShortcuts.getDefaults("session", getBaseContext()));
+        StringRequest strReq = new StringRequest(Request.Method.GET, MyShortcuts.getDefaults("url",getBaseContext()) + "/cargo_handling/api/buildup/?shipmentDate="+theDate+"&sessionId=" + MyShortcuts.getDefaults("session", getBaseContext()), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e("Response from server is", response.toString());
@@ -304,9 +367,13 @@ public class BuildUp extends AppCompatActivity
                     object = jObj;
                     mProgressDialog.dismiss();
 
+
+                    MyShortcuts.setDefaults("UserId", jObj.getString("UserId"), getBaseContext());
+
                     JSONArray res = jObj.getJSONArray("BuildUp");
                     build = res;
 
+                    GetFlight(TheDate);
 
                    /* // looping through All res
                     for (int i = 0; i < res.length(); i++) {
@@ -424,7 +491,13 @@ public class BuildUp extends AppCompatActivity
         try {
             JSONArray res = object.getJSONArray("BuildUp");
 
+//            data2 = new ArrayList<String>();
+//            data2.add("Choose consignee");
+            if (data2.size()<1){
+                data2.add("Choose consignee");
 
+            }
+            adapter2.notifyDataSetChanged();
             for (int i = 0; i < res.length(); i++) {
                 if (i % 2 == 0) {
                     JSONObject shipper = res.getJSONObject(i);
@@ -439,7 +512,8 @@ public class BuildUp extends AppCompatActivity
                             if (j % 2 == 0) {
                                 JSONObject consignee = jsonArray.getJSONObject(j);
                                 data2.add(consignee.getString("ConsigneeName"));
-//                                Log.e("adding data","adding data");
+                                adapter2.notifyDataSetChanged();
+                                Log.e("adding data", consignee.getString("ConsigneeName"));
                             }
 
                         }
@@ -450,7 +524,105 @@ public class BuildUp extends AppCompatActivity
                 }
 
             }
+            if (data2.size()==1){
+
+            }
             adapter2.notifyDataSetChanged();
+
+        } catch (JSONException e) {
+            // JSON error
+            e.printStackTrace();
+//                    Toast.makeText(getBaseContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.e("JSON ERROR", e.toString());
+        }
+
+    }
+
+    private void GetAll(String flight, String date, String Consignee) {
+        try {
+            JSONArray res = object.getJSONArray("BuildUp");
+            data5.add("choose");
+
+            for (int i = 0; i < res.length(); i++) {
+                if (i % 2 == 0) {
+                    JSONObject shipper = res.getJSONObject(i);
+//&&Consignee.equals(shipper.getString("ConsigneeName"))
+                    if (flight.equals(shipper.getString("FlightName")) && date.equals(shipper.getString("ShipmentDate"))) {
+                        JSONObject consignees = res.getJSONObject(i + 1);
+//                        Log.e("consignee",consignees.toString());
+                        JSONArray jsonArray = consignees.getJSONArray("Consignees");
+
+                        for (int j = 0; j < jsonArray.length(); j++) {
+
+                            if (j % 2 == 0) {
+                                AcceptedConsignmentCard acceptedConsignmentCard;
+                                JSONObject consignee = jsonArray.getJSONObject(j);
+
+
+                                if (Consignee.equals(consignee.getString("ConsigneeName"))) {
+                                    int k = j + 1;
+                                    JSONObject shippers = jsonArray.getJSONObject(k);
+
+                                    JSONArray jsonArray1 = shippers.getJSONArray("Shippers");
+
+                                    JSONObject jsonObject = jsonArray1.getJSONObject(0);
+                                    JSONObject jsonObject2 = jsonArray1.getJSONObject(1);
+                                    JSONArray jsonArray2 = jsonObject2.getJSONArray("Pallets");
+
+
+                                    Log.e("paleet", jsonArray2.toString());
+
+                                    for (int l = 0; l < jsonArray2.length(); l++) {
+//                                        Adding data to ULD Type, Contour Name and Unit No
+                                        JSONObject js = jsonArray2.getJSONObject(l);
+
+                                        Log.e("ULD", js.getString("ULDTypeName"));
+                                        data3.add(js.getString("ULDTypeName"));
+                                        data4.add(js.getString("ContourName"));
+                                        data5.add(js.getString("UnitNo"));
+
+
+                                    }
+
+                                    if (jsonArray2.length() >= 1) {
+                                        Log.e("pallet analyzed", jsonArray2.toString());
+
+                                        acceptedConsignmentCard = new AcceptedConsignmentCard(BuildUp.this);
+                                        acceptedConsignmentCard.consignee = consignee.getString("ConsigneeName");
+                                        acceptedConsignmentCard.palletPlan = jsonArray2.toString();
+                                        acceptedConsignmentCard.Shipper = jsonObject.getString("ShipperName");
+                                        acceptedConsignmentCard.data3 = data3;
+                                        acceptedConsignmentCard.data4 = data4;
+                                        acceptedConsignmentCard.data5 = data5;
+                                        acceptedConsignmentCard.setId(jsonObject.getString("ShipperId"));
+                                 /*   acceptedConsignmentCard.planned =*/
+                                        acceptedConsignmentCard.init();
+                                        cards.add(acceptedConsignmentCard);
+
+                                    }
+
+
+                                }
+//                               Log.e("adding data","adding data");
+                            }
+
+                        }
+
+
+                    }
+
+                }
+
+            }
+
+            cardGridArrayAdapter = new CardGridArrayAdapter(getBaseContext(), cards);
+
+            CardGridView cardGridView = (CardGridView) findViewById(R.id.carddemo_grid_base1);
+
+            if (cardGridView != null) {
+                cardGridView.setAdapter(cardGridArrayAdapter);
+            }
+//            adapter2.notifyDataSetChanged();
 
         } catch (JSONException e) {
             // JSON error

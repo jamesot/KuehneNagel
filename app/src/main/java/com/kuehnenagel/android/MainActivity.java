@@ -1,6 +1,8 @@
 package com.kuehnenagel.android;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +18,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -44,7 +48,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private static CardGridArrayAdapter cardGridArrayAdapter;
     private ProgressDialog mProgressDialog;
-    public static String data="";
+    public static String data = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +57,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getIntent().getStringExtra("session");
-
 
 
         if (MyShortcuts.hasInternetConnected(this)) {
@@ -177,12 +180,62 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(getBaseContext(), BuildUp.class);
             startActivity(intent);
 
+        } else if (id == R.id.dispatch) {
+            Intent intent = new Intent(getBaseContext(), Dispatch.class);
+            startActivity(intent);
+
+        } else if (id == R.id.post) {
+            setURL();
+
         }
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    protected void setURL() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+
+        alertDialogBuilder.setTitle("Set URL");
+        alertDialogBuilder.setMessage("Add URL below");
+
+        LinearLayout layout = new LinearLayout(MainActivity.this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+
+        final EditText et = new EditText(MainActivity.this);
+        layout.addView(et);
+
+
+        alertDialogBuilder.setView(layout);
+
+        alertDialogBuilder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                MyShortcuts.setDefaults("url", et.getText().toString(), MainActivity.this);
+
+
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Close & Finish", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+
+
+            }
+        });
+
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show alert
+        alertDialog.show();
+
     }
 
 
@@ -193,12 +246,12 @@ public class MainActivity extends AppCompatActivity
 //        Log.e("JSON serializing", js.toString());
         String tag_string_req = "req_Categories";
 
-        Log.e("url is", MyShortcuts.baseURL() + "/cargo_handling/api/acceptance/?sessionId="+MyShortcuts.getDefaults("session", getBaseContext()));
-        StringRequest strReq = new StringRequest(Request.Method.GET, MyShortcuts.baseURL() + "/cargo_handling/api/acceptance/?sessionId="+ MyShortcuts.getDefaults("session", getBaseContext()), new Response.Listener<String>() {
+        Log.e("url is",MyShortcuts.getDefaults("url",getBaseContext()) + "/cargo_handling/api/acceptance/?sessionId=" + MyShortcuts.getDefaults("session", getBaseContext()));
+        StringRequest strReq = new StringRequest(Request.Method.GET, MyShortcuts.getDefaults("url",getBaseContext()) + "/cargo_handling/api/acceptance/?sessionId=" + MyShortcuts.getDefaults("session", getBaseContext()), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e("Response from server is", response.toString());
-                data=response;
+                data = response;
                 mProgressDialog.dismiss();
 
                 ArrayList<Card> cards = new ArrayList<Card>();
@@ -243,13 +296,12 @@ public class MainActivity extends AppCompatActivity
                             gplayGridCard3.ProductType = shipper.getString("ProductType");
                             gplayGridCard3.Truck = shipper.getString("Truck");
                             gplayGridCard3.TotalNo = shipper.getString("TotalNoOfBoxes");
+                            gplayGridCard3.ShipperId=shipper.getString("ShipperId");
                             gplayGridCard3.setId(shipper.getString("TransportId"));
                             gplayGridCard3.init();
                             cards.add(gplayGridCard3);
 
                         }
-
-
 
 
 //
@@ -292,7 +344,7 @@ public class MainActivity extends AppCompatActivity
                 setRetryPolicy(new DefaultRetryPolicy(0, 0, 0));
                 headers.put("Content-Type", "application/json; charset=utf-8");
 
-                String creds = String.format("%s:%s", "admin","demo");
+                String creds = String.format("%s:%s", "admin", "demo");
                 String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
                 headers.put("Authorization", auth);
                 return headers;

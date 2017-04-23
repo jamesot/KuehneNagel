@@ -1,6 +1,7 @@
 package com.kuehnenagel.android;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -51,6 +52,7 @@ public class ConsigneeInput extends AppCompatActivity
     static TextView input, Gross, Net;
     protected static ArrayList<Card> cards = new ArrayList<Card>();
     protected static List<String> dimension = new ArrayList<String>();
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +63,27 @@ public class ConsigneeInput extends AppCompatActivity
         setTitle(getIntent().getStringExtra("name"));
         cards.clear();
 
-        GetData();
+        JSONObject jsonObject= new JSONObject();
+
+        try {
+            jsonObject.put("name", getIntent().getStringExtra("name"));
+            jsonObject.put("seal_no",getIntent().getStringExtra("seal_no"));
+            jsonObject.put("TransportId", getIntent().getStringExtra("TransportId"));
+            jsonObject.put("ShipperId", getIntent().getStringExtra("ShipperId"));
+            MyShortcuts.setDefaults("Acceptance",jsonObject.toString(),getBaseContext());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        if (MyShortcuts.hasInternetConnected(this)) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage("Getting data ...");
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.show();
+            GetData();
+        }
 /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -162,77 +184,78 @@ public class ConsigneeInput extends AppCompatActivity
         return true;
     }
 
-   /* protected void showDialog() {
+    /* protected void showDialog() {
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ConsigneeInput.this);
+         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ConsigneeInput.this);
 
-        alertDialogBuilder.setTitle("Box Count and weight");
-        alertDialogBuilder.setMessage("Select Box dimension and input the box count");
-        EditText input = new EditText(ConsigneeInput.this);
-        input.setHint("Enter box count");
-        alertDialogBuilder.setView(input);
-        Spinner spinner = new Spinner(ConsigneeInput.this);
-        dimension.add("100x33x20");
+         alertDialogBuilder.setTitle("Box Count and weight");
+         alertDialogBuilder.setMessage("Select Box dimension and input the box count");
+         EditText input = new EditText(ConsigneeInput.this);
+         input.setHint("Enter box count");
+         alertDialogBuilder.setView(input);
+         Spinner spinner = new Spinner(ConsigneeInput.this);
+         dimension.add("100x33x20");
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(ConsigneeInput.this,
-                android.R.layout.simple_spinner_item, dimension);
-
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        alertDialogBuilder.setView(spinner);
-
-        alertDialogBuilder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                WeightDialog();
-            }
-        });
-
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-
-            }
-        });
+         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(ConsigneeInput.this,
+                 android.R.layout.simple_spinner_item, dimension);
 
 
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        // show alert
-        alertDialog.show();
+         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+         spinner.setAdapter(adapter);
+         alertDialogBuilder.setView(spinner);
 
-    }
+         alertDialogBuilder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+
+             @Override
+             public void onClick(DialogInterface dialog, int which) {
+                 WeightDialog();
+             }
+         });
+
+         alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+             @Override
+             public void onClick(DialogInterface dialog, int which) {
+                 dialog.cancel();
+
+             }
+         });
+
+
+         AlertDialog alertDialog = alertDialogBuilder.create();
+         // show alert
+         alertDialog.show();
+
+     }
 
 
 
-*/
-   private void GetData() {
-       // Toast.makeText(getBaseContext(), "Inside function!", Toast.LENGTH_SHORT).show();
-       // Tag used to cancel the request
+ */
+    private void GetData() {
+        // Toast.makeText(getBaseContext(), "Inside function!", Toast.LENGTH_SHORT).show();
+        // Tag used to cancel the request
 
 //        Log.e("JSON serializing", js.toString());
-       String tag_string_req = "req_Categories";
+        String tag_string_req = "req_Categories";
 
-       Log.e("url is", MyShortcuts.baseURL() + "cargo_handling/api/acceptance/?sessionId="+ MyShortcuts.getDefaults("session",getBaseContext()));
-       StringRequest strReq = new StringRequest(Request.Method.GET, MyShortcuts.baseURL() + "/cargo_handling/api/acceptance/?sessionId="+MyShortcuts.getDefaults("session",getBaseContext()), new Response.Listener<String>() {
-           @Override
-           public void onResponse(String response) {
-               Log.e("Response from server is", response.toString());
+        Log.e("url is", MyShortcuts.getDefaults("url",getBaseContext())  + "cargo_handling/api/acceptance/?sessionId=" + MyShortcuts.getDefaults("session", getBaseContext()));
+        StringRequest strReq = new StringRequest(Request.Method.GET, MyShortcuts.baseURL() + "/cargo_handling/api/acceptance/?sessionId=" + MyShortcuts.getDefaults("session", getBaseContext()), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e("Response from server is", response.toString());
+                mProgressDialog.dismiss();
 
-               ArrayList<Card> cards = new ArrayList<Card>();
-               String success = null;
-               try {
-                   JSONObject jObj = new JSONObject(response);
+                ArrayList<Card> cards = new ArrayList<Card>();
+                String success = null;
+                try {
+                    JSONObject jObj = new JSONObject(response);
 //                            res = jObj.getJSONArray("All");
-                   //successfully gotten matatu data
+                    //successfully gotten matatu data
 //                        String regno = jObj.getString("regno");
 
-                   JSONArray res = jObj.getJSONArray("Transport");
+                    JSONArray res = jObj.getJSONArray("Transport");
 
-                   Log.e("result array: ", res.toString());
+                    Log.e("result array: ", res.toString());
 
 /*
                     JSONObject shipper = res.getJSONObject(0);
@@ -250,41 +273,41 @@ public class ConsigneeInput extends AppCompatActivity
 //                    JSONArray res1 = jObj.getJSONArray("Transport");
 
 
-                   // looping through All res
-                   for (int i = 0; i < res.length(); i++) {
-                       JSONObject c = res.getJSONObject(i);
+                    // looping through All res
+                    for (int i = 0; i < res.length(); i++) {
+                        JSONObject c = res.getJSONObject(i);
 
-                       if (i % 2 == 0) {
-
-
-                           JSONObject shipper = res.getJSONObject(i);
+                        if (i % 2 == 0) {
 
 
-                           if (shipper.getString("ShipperName").equals(getIntent().getStringExtra("name"))&&shipper.getString("TransportId").equals(getIntent().getStringExtra("TransportId"))){
-                               JSONObject consignee = res.getJSONObject(i+1);
+                            JSONObject shipper = res.getJSONObject(i);
 
 
-                               JSONArray jsonArray= consignee.getJSONArray("Consignees");
-
-                               if (jsonArray.length()==0){
-                                   MyShortcuts.showToast("No consignees!",getBaseContext());
-                               }
-
-                               for (int j = 0; j <jsonArray.length(); j++) {
-                                   Consignee consignee2 = new Consignee(getBaseContext());
-                                   JSONObject js= jsonArray.getJSONObject(i);
-                                   consignee2.Consignee = js.getString("ConsigneeName");
-                                   consignee2.TotalBoxes=js.getString("Boxes");
-                                   consignee2.mawb=js.getString("MAWB");
-                                   consignee2.hawb=js.getString("HAWB");
-                                   consignee2.setId(js.getString("ConsigneeId"));
-
-                                   consignee2.init();
-                                   cards.add(consignee2);
-                               }
+                            if (shipper.getString("ShipperName").equals(getIntent().getStringExtra("name")) && shipper.getString("TransportId").equals(getIntent().getStringExtra("TransportId"))) {
+                                JSONObject consignee = res.getJSONObject(i + 1);
 
 
-                           }
+                                JSONArray jsonArray = consignee.getJSONArray("Consignees");
+
+                                if (jsonArray.length() == 0) {
+                                    MyShortcuts.showToast("No consignees!", getBaseContext());
+                                }
+
+                                for (int j = 0; j < jsonArray.length(); j++) {
+                                    Consignee consignee2 = new Consignee(ConsigneeInput.this);
+                                    JSONObject js = jsonArray.getJSONObject(i);
+                                    consignee2.Consignee = js.getString("ConsigneeName");
+                                    consignee2.TotalBoxes = js.getString("Boxes");
+                                    consignee2.mawb = js.getString("MAWB");
+                                    consignee2.hawb = js.getString("HAWB");
+                                    consignee2.setId(js.getString("ConsigneeId"));
+
+                                    consignee2.init();
+                                    cards.add(consignee2);
+                                }
+
+
+                            }
 
 /*
                            GplayGridCard gplayGridCard3 = new GplayGridCard(getBaseContext());
@@ -296,69 +319,67 @@ public class ConsigneeInput extends AppCompatActivity
                            gplayGridCard3.TotalNo = shipper.getString("TotalNoOfBoxes");
                            gplayGridCard3.init();
                            cards.add(gplayGridCard3);*/
-                       }
-
-
+                        }
 
 
 //
-                   }
-                   if (res.length() == 0) {
-                       Toast.makeText(getBaseContext(), "No data Available now! check later ", Toast.LENGTH_LONG).show();
-                   }
-                   cardGridArrayAdapter = new CardGridArrayAdapter(getBaseContext(), cards);
+                    }
+                    if (res.length() == 0) {
+                        Toast.makeText(getBaseContext(), "No data Available now! check later ", Toast.LENGTH_LONG).show();
+                    }
+                    cardGridArrayAdapter = new CardGridArrayAdapter(getBaseContext(), cards);
 
-                   CardGridView listView = (CardGridView) findViewById(R.id.carddemo_grid_base1);
-                   if (listView != null) {
-                       listView.setAdapter(cardGridArrayAdapter);
-                   }
+                    CardGridView listView = (CardGridView) findViewById(R.id.carddemo_grid_base1);
+                    if (listView != null) {
+                        listView.setAdapter(cardGridArrayAdapter);
+                    }
 
 
-               } catch (JSONException e) {
-                   // JSON error
-                   e.printStackTrace();
+                } catch (JSONException e) {
+                    // JSON error
+                    e.printStackTrace();
 //                    Toast.makeText(getBaseContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                   Log.e("JSON ERROR", e.toString());
-               }
-           }
+                    Log.e("JSON ERROR", e.toString());
+                }
+            }
 
 
-       }, new Response.ErrorListener() {
+        }, new Response.ErrorListener() {
 
-           @Override
-           public void onErrorResponse(VolleyError error) {
-               VolleyLog.d("VolleyError", "Error: " + error.getMessage());
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("VolleyError", "Error: " + error.getMessage());
 //                hideProgressDialog();
-           }
-       }) {
+            }
+        }) {
 
-           @Override
-           public Map<String, String> getHeaders() throws AuthFailureError {
-               HashMap<String, String> headers = new HashMap<String, String>();
-               setRetryPolicy(new DefaultRetryPolicy(5 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
-               setRetryPolicy(new DefaultRetryPolicy(0, 0, 0));
-               headers.put("Content-Type", "application/json; charset=utf-8");
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                setRetryPolicy(new DefaultRetryPolicy(5 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
+                setRetryPolicy(new DefaultRetryPolicy(0, 0, 0));
+                headers.put("Content-Type", "application/json; charset=utf-8");
 
-               String creds = String.format("%s:%s", "admin","demo");
-               String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
-               headers.put("Authorization", auth);
-               return headers;
-           }
+                String creds = String.format("%s:%s", "admin", "demo");
+                String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
+                headers.put("Authorization", auth);
+                return headers;
+            }
 
-           @Override
-           protected Map<String, String> getParams() {
-               // Posting params to register url
-               Map<String, String> params = new HashMap<String, String>();
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
 //                Log.e("category id", getIntent().getStringExtra("category_id"));
 //                params.put("categoryId", 2 + "");
 
 
-               return params;
-           }
-       };
-       // Adding request to request queue
-       AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-       Log.e("request is", strReq.toString());
-   }
+                return params;
+            }
+        };
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        Log.e("request is", strReq.toString());
+    }
 
 }

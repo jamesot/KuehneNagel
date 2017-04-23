@@ -16,6 +16,7 @@ import java.util.HashMap;
  */
 public class MyShortcuts {
 
+
     public static String baseURL(){
         return "http://45.55.130.63:8080/knap2/";
     }

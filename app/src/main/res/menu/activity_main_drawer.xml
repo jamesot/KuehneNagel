@@ -15,6 +15,14 @@
             android:id="@+id/build"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Build Up" />
+        <item
+            android:id="@+id/dispatch"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Dispatch" />
+        <item
+            android:id="@+id/post"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Post URL" />
 
 
     </group>

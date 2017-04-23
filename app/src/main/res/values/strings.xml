@@ -67,4 +67,5 @@
     <string name="title_activity_pallet_plan">PalletPlan</string>
     <string name="title_activity_home_page">HomePage</string>
     <string name="title_activity_dispatch">Dispatch</string>
+    <string name="title_activity_url">Url</string>
 </resources>

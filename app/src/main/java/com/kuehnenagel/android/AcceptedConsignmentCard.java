@@ -41,7 +41,14 @@ public class AcceptedConsignmentCard extends Card {
     protected String ProductType;
     protected String Truck;
     protected String TotalNo;
-    protected String Action;
+    protected String Action,planned,consignee,palletPlan;
+//    protected ArrayList<String> data2,data3,data4,data5 = new ArrayList<String>();
+    ArrayList<String> data3 = new ArrayList<String>();
+    ArrayList<String> data4 = new ArrayList<String>();
+    ArrayList<String> data5 = new ArrayList<String>();
+
+    ArrayAdapter<String> adapter, adapter2,adapter3;
+
 
     protected Context context;
     static TextView input, Gross, Net;
@@ -61,7 +68,7 @@ public class AcceptedConsignmentCard extends Card {
     protected void init() {
         CardHeader header = new CardHeader(getContext());
         header.setButtonOverflowVisible(true);
-        header.setTitle(Shipper);
+        header.setTitle(consignee);
         /*header.setPopupMenu(R.menu.popupmain, new CardHeader.OnClickCardHeaderPopupMenuListener() {
             @Override
             public void onMenuItemClick(BaseCard card, MenuItem item) {
@@ -126,18 +133,22 @@ public class AcceptedConsignmentCard extends Card {
             }
         });
 */
-        Spinner box_type = (Spinner) view.findViewById(R.id.unit);
-
-        box_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        final Spinner unit = (Spinner) view.findViewById(R.id.unit);
+        adapter3= new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, data5);
+        unit.setAdapter(adapter3);
+        unit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selected_item = parent.getItemAtPosition(position).toString();
 //                if (selected_item.equals("Standard")) {
 //                    showDialog();
                 if (!selected_item.equals("choose")){
-
+//TODO should also filter the pallet plan per unit number
                 Intent intent = new Intent(context, PalletPlan.class);
                 intent.putExtra("name",getCardHeader().getTitle());
+                    intent.putExtra("pallet",palletPlan);
+                    intent.putExtra("shipper",Shipper);
+                    intent.putExtra("unit",selected_item);
                 context.startActivity(intent);
                 }
 //                }
@@ -160,6 +171,7 @@ public class AcceptedConsignmentCard extends Card {
             @Override
             public void onClick(View view) {
 
+
                 Intent intent = new Intent(context, PalletPlan.class);
                 intent.putExtra("name",getCardHeader().getTitle());
                 context.startActivity(intent);
@@ -169,9 +181,54 @@ public class AcceptedConsignmentCard extends Card {
 
             }
         });
+        final TextView shipper = (TextView) view.findViewById(R.id.shipper);
+        shipper.setText(Shipper);
 
-        final TextView box_dimensions =(TextView) view. findViewById(R.id.box_dimension);
-        box_dimensions.setText(box_dimension);
+        /*final TextView box_dimensions =(TextView) view. findViewById(R.id.box_dimension);
+        box_dimensions.setText(box_dimension);*/
+        final TextView total_boxes= (TextView) view.findViewById(R.id.total_boxes);
+        total_boxes.setText(planned);
+
+        Spinner device = (Spinner) view.findViewById(R.id.device);
+        adapter2 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, data3);
+        device.setAdapter(adapter2);
+
+        device.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selected_item = parent.getItemAtPosition(position).toString();
+               /* if (selected_item.equals("Standard")) {
+                    showDialog();
+                }
+*/
+                Log.e("Box device", selected_item);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        Spinner type = (Spinner) view.findViewById(R.id.type);
+        adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, data4);
+        type.setAdapter(adapter);
+        type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selected_item = parent.getItemAtPosition(position).toString();
+                /*if (selected_item.equals("Standard")) {
+                    showDialog();
+                }*/
+
+                Log.e("Box type", selected_item);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
        /* final EditText boxes=(EditText) view.findViewById(R.id.actual_count);
         boxes.setText(TotalNo);*/

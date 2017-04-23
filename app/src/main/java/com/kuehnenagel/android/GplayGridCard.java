@@ -31,6 +31,8 @@ public class GplayGridCard extends Card {
     protected String TotalNo;
     protected Context cxt;
     protected String Action;
+    protected String ShipperId;
+
 
     public GplayGridCard(Context context) {
         super(context, R.layout.inner_content_detail);
@@ -110,6 +112,7 @@ public class GplayGridCard extends Card {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("name",getCardHeader().getTitle());
                 intent.putExtra("TransportId",getId());
+                intent.putExtra("ShipperId",ShipperId);
                 Log.e("transport id is ",getId());
                 cxt.startActivity(intent);
             }

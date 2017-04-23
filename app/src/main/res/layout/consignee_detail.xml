@@ -79,7 +79,7 @@
             android:textSize="12sp" />
     </RelativeLayout>
 
-    <TextView
+    <EditText
         android:id="@+id/actual_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

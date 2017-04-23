@@ -1,5 +1,7 @@
 package com.kuehnenagel.android;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,6 +17,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import developer.shivam.library.DiagonalView;
 
@@ -27,6 +32,12 @@ public class HomePage extends AppCompatActivity
         setContentView(R.layout.activity_home_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        if (MyShortcuts.checkDefaults("url",this)){
+
+        }else{
+            MyShortcuts.setDefaults("url","http://10.38.32.7:8081/knap2",this);
+        }
         setTitle("Home");
 
         DiagonalView diagonalView = new DiagonalView(this);
@@ -133,10 +144,61 @@ public class HomePage extends AppCompatActivity
             Intent intent = new Intent(getBaseContext(),BuildUp.class);
             startActivity(intent);
 
-        }
+        } else if (id == R.id.dispatch) {
+            Intent intent = new Intent(getBaseContext(), Dispatch.class);
+            startActivity(intent);
 
+        }else if (id == R.id.post) {
+            setURL();
+
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    protected void setURL() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(HomePage.this);
+
+        alertDialogBuilder.setTitle("Set URL");
+        alertDialogBuilder.setMessage("Add URL below");
+
+        LinearLayout layout = new LinearLayout(HomePage.this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+
+        final EditText et = new EditText(HomePage.this);
+        layout.addView(et);
+
+
+        alertDialogBuilder.setView(layout);
+
+        alertDialogBuilder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                MyShortcuts.setDefaults("url", et.getText().toString(), HomePage.this);
+
+
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Close & Finish", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+
+
+            }
+        });
+
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show alert
+        alertDialog.show();
+
     }
 }

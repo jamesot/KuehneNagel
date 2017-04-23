@@ -78,13 +78,15 @@ public class Acceptance extends BaseActivity
                     } else {
                         Intent intent = new Intent(getBaseContext(), ConsigneeInput.class);
                         intent.putExtra("name", getIntent().getStringExtra("name"));
+                        intent.putExtra("seal_no",getIntent().getStringExtra("seal_no"));
                         intent.putExtra("TransportId", getIntent().getStringExtra("TransportId"));
+                        intent.putExtra("ShipperId",getIntent().getStringExtra("ShipperId"));
                         startActivity(intent);
                     }
 
-                }else {
+                } else {
 //                    MyShortcuts.showToast("Kindly fill all the temperatures!",getBaseContext());
-                    Toast.makeText(getBaseContext(),"Kindly fill all the temperatures!",Toast.LENGTH_LONG);
+                    Toast.makeText(getBaseContext(), "Kindly fill all the temperatures!", Toast.LENGTH_LONG);
                 }
 
             }
@@ -286,6 +288,10 @@ public class Acceptance extends BaseActivity
 
         } else if (id == R.id.build) {
             Intent intent = new Intent(getBaseContext(), BuildUp.class);
+            startActivity(intent);
+
+        } else if (id == R.id.dispatch) {
+            Intent intent = new Intent(getBaseContext(), Dispatch.class);
             startActivity(intent);
 
         }

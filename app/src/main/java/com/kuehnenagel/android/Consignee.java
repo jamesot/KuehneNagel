@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.android.volley.Response;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +49,7 @@ public class Consignee extends Card {
     protected String TotalBoxes;
     protected String ActualCount;
     protected Context context;
+    protected String Xray, boxType;
     static TextView input, Gross, Net;
     static boolean answer = false;
 
@@ -102,12 +109,11 @@ public class Consignee extends Card {
         title.setText(Consignee);
 
 
-
         final TextView TotalB = (TextView) view.findViewById(R.id.t_boxes);
         TotalB.setText(TotalBoxes);
 
-        final TextView subtitle = (TextView) view.findViewById(R.id.actual_count);
-        subtitle.setText(ActualCount);
+        /*final EditeTe subtitle = (TextView) view.findViewById(R.id.actual_count);
+        subtitle.setText(ActualCount);*/
         final TextView Pt = (TextView) view.findViewById(R.id.mawb);
         Pt.setText(mawb);
         final TextView truck = (TextView) view.findViewById(R.id.hawb);
@@ -126,7 +132,46 @@ public class Consignee extends Card {
                 getContext().startActivity(intent);
             }
         });
+
 */
+
+        Spinner xray = (Spinner) view.findViewById(R.id.xray);
+        xray.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selected_item = parent.getItemAtPosition(position).toString();
+                Log.e("XRAY", selected_item);
+                Xray=selected_item;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        Spinner box_type = (Spinner) view.findViewById(R.id.box_type);
+        box_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selected_item = parent.getItemAtPosition(position).toString();
+                if (selected_item.equals("Standard")) {
+                    showDialog();
+                }
+
+                Log.e("Box type", selected_item);
+                boxType=selected_item;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        final EditText etD= (EditText)view. findViewById(R.id.delivery_note);
+        final EditText etActual= (EditText)view. findViewById(R.id.actual_count);
 
         final TextView action = (TextView) view.findViewById(R.id.accept);
 
@@ -134,9 +179,35 @@ public class Consignee extends Card {
         action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, MainActivity.class);
+                MyShortcuts.showToast("Cargo accepted!", context);
 
-                context.startActivity(intent);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject jsonObject = new JSONObject(MyShortcuts.getDefaults("Acceptance",context));
+                            jsonObject.put("deliveryNoteNumber",deliveryNoteNumber);
+                            jsonObject.put("actualCount",etD.getText().toString());
+                            jsonObject.put("XrayLog",Xray);
+                            jsonObject.put("boxType",boxType);
+                            jsonObject.put("boxCount",etActual.getText().toString());
+                            jsonObject.put("weightTares","");
+                            jsonObject.put("weightGross","");
+                            jsonObject.put("weightNet","");
+                            jsonObject.put("consigneeId",getId());
+                            Log.e("Acceptance Object",jsonObject.toString());
+                            MyShortcuts.setDefaults("Acceptance",jsonObject.toString(),context);
+                            send(jsonObject);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Intent intent = new Intent(context, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                }, 1000);
+
                 /*Intent intent = new Intent(getContext(),Acceptance.class);
                 intent.putExtra("seal_no",SealNo);
                 Log.e("seal",SealNo);
@@ -169,38 +240,7 @@ public class Consignee extends Card {
                 getContext().startActivity(intent);*/
             }
         });
-        Spinner xray = (Spinner) view.findViewById(R.id.xray);
-        xray.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selected_item = parent.getItemAtPosition(position).toString();
-                Log.e("XRAY", selected_item);
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-
-        Spinner box_type = (Spinner) view.findViewById(R.id.box_type);
-        box_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selected_item = parent.getItemAtPosition(position).toString();
-                if (selected_item.equals("Standard")) {
-                    showDialog();
-                }
-
-                Log.e("Box type", selected_item);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
 
         /*
@@ -307,7 +347,7 @@ public class Consignee extends Card {
         Net.setText("Net: " + c);
         layout.addView(Net);
 
-        Button button= new Button(context);
+        Button button = new Button(context);
         button.setText("Add manually");
         layout.addView(button);
 
@@ -376,9 +416,6 @@ public class Consignee extends Card {
         layout.addView(et3);
 
 
-
-
-
         alertDialogBuilder.setView(layout);
 
         alertDialogBuilder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {
@@ -418,7 +455,7 @@ public class Consignee extends Card {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
         alertDialogBuilder.setTitle(message);
-        alertDialogBuilder.setMessage("Are you sure you want to "+message+"?");
+        alertDialogBuilder.setMessage("Are you sure you want to " + message + "?");
 
         LinearLayout layout = new LinearLayout(context);
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -449,6 +486,16 @@ public class Consignee extends Card {
         // show alert
         alertDialog.show();
         return answer;
+    }
+
+    private void send(final JSONObject jsonObject) {
+
+        Post.PostData(MyShortcuts.getDefaults("url",context), jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.e("response",jsonObject.toString());
+            }
+        });
     }
 
 

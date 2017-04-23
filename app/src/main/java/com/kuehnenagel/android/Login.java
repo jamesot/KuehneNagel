@@ -54,6 +54,7 @@ public class Login extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setTitle("Kuehne Nagel");
         ButterKnife.bind(this);
+        MyShortcuts.setDefaults("url","http://10.38.32.7:8081/knap2",this);
         _emailText.setText(getDefaults("email", this));
         _passwordText.setText(getDefaults("password", this));
 
@@ -155,6 +156,7 @@ public class Login extends AppCompatActivity {
             _emailText.setError(null);
         }
 
+
         if (password.isEmpty()) {
             _passwordText.setError("Password is empty");
             valid = false;
@@ -168,14 +170,14 @@ public class Login extends AppCompatActivity {
     private void logindetail(final String username, final String password) {
         String tag_string_req = "req_login";
         StringRequest strReq = new StringRequest(Request.Method.GET,
-                MyShortcuts.baseURL() + "cargo_handling/api/login/?" + "username=" + username + "&password=" + password, new Response.Listener<String>() {
+                MyShortcuts.getDefaults("url",getBaseContext())  + "cargo_handling/api/login/?" + "username=" + username + "&password=" + password, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
                 Log.d("All Data", "response from the server is: " + response.toString());
 //                hideDialog();
 
-                Log.e("Url is", MyShortcuts.baseURL() + "cargo_handling/api/login/?" + "username=" + username + "&password=" + password);
+                Log.e("Url is",  MyShortcuts.getDefaults("url",getBaseContext()) + "cargo_handling/api/login/?" + "username=" + username + "&password=" + password);
 
                 try {
                     JSONObject jObj = new JSONObject(response);
@@ -187,6 +189,9 @@ public class Login extends AppCompatActivity {
 //                    String success = jObj.getString("success");
                     setDefaults("email", _emailText.getText().toString(), getBaseContext());
                     setDefaults("password", _passwordText.getText().toString(), getBaseContext());
+
+
+//                    MyShortcuts.setDefaults("user",js.getString(""));
                     MyShortcuts.setDefaults("session", session, getBaseContext());
                     MyShortcuts.set(_emailText.getText().toString(), _passwordText.getText().toString(), getBaseContext());
                     Intent intent = new Intent(getApplicationContext(), HomePage.class);

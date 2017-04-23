@@ -30,7 +30,7 @@
         android:layout_marginRight="5dp"
         android:layout_toEndOf="@+id/shiplabel"
         android:layout_toRightOf="@+id/shiplabel"
-        android:text="Oserian"
+        android:text=""
         android:textColor="@android:color/black"
         android:textSize="12sp" />
 
@@ -241,12 +241,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
-            android:text="Pallet Number"
+            android:text="Add Pallet Number"
             android:textColor="@android:color/black"
             android:textSize="12sp" />
     </RelativeLayout>
 
-    <TextView
+    <EditText
         android:id="@+id/pallet_number_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -255,7 +255,7 @@
         android:layout_marginTop="10dp"
         android:textColor="@android:color/black"
         android:textSize="12sp"
-        android:text="1234"
+        android:hint="Enter Pallet Number"
         android:layout_toEndOf="@+id/PalletNumber"
         android:layout_toRightOf="@+id/PalletNumber"
         android:layout_below="@+id/tlabel"/>
@@ -306,7 +306,7 @@
 
         <TextView
             android:id="@+id/add_new_entry"
-            android:layout_width="150dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/view"
             android:background="@drawable/carddemo_mayknow_add"
@@ -314,6 +314,29 @@
             android:textAlignment="center"
             android:textColor="@color/mb_white"
             android:textSize="15sp"/>
+
+        <TextView
+        android:id="@+id/view2"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/proceed_build"
+        android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/submit"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/carddemo_mayknow_add"
+            android:text=" submit"
+            android:textAlignment="center"
+            android:textColor="@color/mb_white"
+            android:textSize="15sp"
+            android:layout_alignBaseline="@+id/view"
+            android:layout_alignBottom="@+id/view"
+            android:layout_toRightOf="@+id/add_new_entry"
+            android:layout_toEndOf="@+id/add_new_entry"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp" />
         <!--<android.support.v7.widget.AppCompatButton
             android:layout_width="150dp"
             android:layout_height="wrap_content"
